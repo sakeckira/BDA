@@ -1,0 +1,56 @@
+# ===========================
+# STEP 1: START HADOOP SERVICES
+# ===========================
+sudo service hadoop-hdfs-namenode start
+sudo service hadoop-hdfs-datanode start
+sudo service hadoop-yarn-resourcemanager start
+sudo service hadoop-yarn-nodemanager start
+sudo service hadoop-mapreduce-historyserver start
+
+# ===========================
+# STEP 2: START HBASE (optional for Pig, but often needed)
+# ===========================
+sudo service hbase-master start
+sudo service hbase-regionserver start
+
+# ===========================
+# STEP 3: CREATE PIG DATA DIRECTORY ON HDFS
+# ===========================
+hdfs dfs -mkdir -p /user/cloudera/pig_data
+
+# ===========================
+# STEP 4: CREATE LOCAL SAMPLE FILE
+# ===========================
+cd /home/cloudera
+mkdir -p pig_data
+cd pig_data
+echo "1,Ram,22" > sample.txt
+echo "2,Shyam,30" >> sample.txt
+echo "3,Mohan,35" >> sample.txt
+
+# Verify local file
+cat sample.txt
+
+# ===========================
+# STEP 5: COPY FILE TO HDFS
+# ===========================
+hdfs dfs -put /home/cloudera/pig_data/sample.txt /user/cloudera/pig_data/
+
+# Verify HDFS file
+hdfs dfs -ls /user/cloudera/pig_data
+
+# ===========================
+# STEP 6: CREATE PIG SCRIPT FILE
+# ===========================
+cd /home/cloudera/pig_data
+nano script.pig
+
+
+student = LOAD '/user/cloudera/pig_data/sample.txt' USING PigStorage(',') AS (id:int, name:chararray, age:int);
+DUMP student;
+
+
+# ===========================
+# STEP 7: EXECUTE PIG SCRIPT
+# ===========================
+pig -x mapreduce /home/cloudera/pig_data/script.pig
