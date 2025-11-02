@@ -1,0 +1,77 @@
+
+hadoop fs -help
+hadoop fs -help ls
+hadoop fs -usage ls
+
+ls — List Files
+hadoop fs -ls
+hadoop fs -ls /
+
+mkdir — Create Directory
+hadoop fs -mkdir /user/cloudera/demo
+
+copyFromLocal — Upload File
+echo "Hello Hadoop" > sample1.txt
+hadoop fs -copyFromLocal sample1.txt /user/cloudera/demo
+hadoop fs -ls /user/cloudera/demo
+
+put — Another way to Upload
+hadoop fs -put sample1.txt /user/cloudera/demo
+
+moveFromLocal — Move & Delete Local File
+
+Create another file:
+echo "Second File" > sample2.txt
+hadoop fs -moveFromLocal sample2.txt /user/cloudera/demo
+hadoop fs -ls /user/cloudera/demo
+
+du — Disk Usage
+hadoop fs -du /user/cloudera/demo
+
+df — Filesystem Info
+hadoop fs -df
+
+expunge — Empty Trash
+hadoop fs -expunge
+
+cat — Show File Content
+hadoop fs -cat /user/cloudera/demo/sample1.txt
+
+cp — Copy in HDFS
+hadoop fs -cp /user/cloudera/demo/sample1.txt /user/cloudera/demo/sample1_copy.txt
+
+
+mv — Move in HDFS
+hadoop fs -mv /user/cloudera/demo/sample1_copy.txt /user/cloudera/
+
+rm — Remove File
+hadoop fs -rm /user/cloudera/demo/sample1.txt
+hadoop fs -rm -r /user/cloudera/demo
+
+tail — View End of File
+hadoop fs -tail /user/cloudera/sample1_copy.txt
+
+copyToLocal — Download File
+hadoop fs -copyToLocal /user/cloudera/sample1_copy.txt ~/hadoop_test/
+ls ~/hadoop_test/
+
+get — Also Downloads
+hadoop fs -get /user/cloudera/sample1_copy.txt ~/hadoop_test/
+
+touchz — Create Empty File
+hadoop fs -touchz /user/cloudera/newfile.txt
+
+setrep — Change Replication Factor
+hadoop fs -setrep -w 1 /user/cloudera/newfile.txt
+
+chgrp — Change Group (requires sudo)
+sudo -u hdfs hadoop fs -chgrp -R cloudera /user/cloudera
+
+chown — Change Owner (requires sudo)
+sudo -u hdfs hadoop fs -chown -R cloudera /user/cloudera
+
+chmod — Change Permissions
+hadoop fs -chmod 777 /user/cloudera/newfile.txt
+
+Check your HDFS status:
+hadoop fs -ls /user/cloudera
