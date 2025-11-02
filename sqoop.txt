@@ -1,0 +1,38 @@
+Start MySQL Service:
+
+sudo service mysqld start
+
+
+Login to MySQL and create DB/Table:
+
+mysql -u root -pcloudera
+create database db11;
+use db11;
+create table student(id int primary key, name varchar(50));
+insert into student values(1,'kartik'),(2,'rahul'),(3,'neha');
+select * from student;
+exit;
+
+
+Fix HDFS permissions (important!):
+
+sudo -u hdfs hadoop fs -mkdir -p /user/training
+sudo -u hdfs hadoop fs -chown -R cloudera /user/training
+sudo -u hdfs hadoop fs -chmod -R 777 /user/training
+
+
+Run Sqoop Import:
+
+sqoop import \
+--connect jdbc:mysql://localhost/db11 \
+--username root \
+--password cloudera \
+--table student \
+--m 1 \
+--target-dir /user/training/student_import
+
+
+Verify Import:
+
+hadoop fs -ls /user/training/student_import
+hadoop fs -cat /user/training/student_import/part-m-00000
