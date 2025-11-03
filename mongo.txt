@@ -1,0 +1,29 @@
+show dbs - show databases
+
+use college - create college db
+
+db.createCollection("students") - create collection inside db
+
+db.students.insertOne({name:"Anugrah",rollno:22,PRN:"22UF17555CM154"}) - insert one
+
+db.students.insertMany([{name:"hardik",rollno:32,PRN:"ululu"},{name:"kartik",rollno:23,PRN:"22UF16994CM155"}]) - insert many(brackets careful)
+
+db.students.find({rollno:23}) - find by any value 
+
+db.students1.updateOne({name:'anugrah'},{$set:{rollno:22,marks:70}}) - update a value
+
+
+db.students.updateMany({PRN:"ululu"},{$set:{PRN:3434,...}}) - update many
+
+db.students.deleteOne({name:"Ashaaf"}) - delete one
+
+db.students.deleteMany({ marks: 75 }) - delete many based on flter
+
+db.students.drop() - drop collection
+
+db.dropDatabase() - drop database
+
+
+
+
+
