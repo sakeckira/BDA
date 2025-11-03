@@ -1,0 +1,73 @@
+ hive
+ 
+CREATE DATABASE company_db;
+ 
+USE company_db;
+
+ CREATE TABLE employee (
+    emp_id INT,
+    name STRING,
+    dept STRING,
+    sal FLOAT
+    )
+    ROW FORMAT DELIMITED
+    FIELDS TERMINATED BY ','
+    STORED AS TEXTFILE;
+
+INSERT INTO employee VALUES
+    (1, 'Hardik', 'IT', 40000),
+    (2, 'Riya', 'Finance', 50000),
+    (3, 'Aman', 'HR', 45000),
+    (4, 'Neha', 'IT', 42000),
+    (5, 'Raj', 'Finance', 65000);
+
+SELECT * FROM employee;
+
+
+SELECT COUNT(*) AS total_employees FROM employee;
+
+SELECT MIN(salary) AS min_salary, MAX(salary) AS max_salary FROM employee;
+
+SELECT AVG(salary) AS avg_salary FROM employee;
+
+SELECT SUM(salary) AS total_salary FROM employee;
+
+SELECT e.emp_id, e.name, e.department, d.location, e.salary
+FROM employee e
+JOIN department_info d
+ON e.department = d.department;
+
+
+CREATE TABLE employee_partitioned (
+    emp_id INT,
+    name STRING,
+    salary FLOAT
+)
+PARTITIONED BY (department STRING)
+ROW FORMAT DELIMITED
+FIELDS TERMINATED BY ','
+STORED AS TEXTFILE;
+
+
+INSERT INTO TABLE employee_partitioned PARTITION (department='IT')
+VALUES (1, 'Hardik', 40000), (4, 'Neha', 42000);
+
+INSERT INTO TABLE employee_partitioned PARTITION (department='Finance')
+VALUES (2, 'Riya', 50000), (5, 'Raj', 65000);
+
+INSERT INTO TABLE employee_partitioned PARTITION (department='HR')
+VALUES (3, 'Aman', 45000);
+
+
+SELECT * FROM employee_partitioned;
+
+SHOW PARTITIONS employee_partitioned;
+
+
+SELECT * FROM employee_partitioned WHERE department='IT';
+
+
+
+
+
+
